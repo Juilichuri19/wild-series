@@ -3,7 +3,7 @@
 {% block title %}All programs{% endblock %}
 
 {% block body %}
-    <h1>Toutes les séries de la table program associées à la catégorie : {{ category.name }}</h1>
+    <h1 style="border-bottom: 1px solid black; padding-bottom: 5px">Toutes les séries de la table program associées à la catégorie : {{ category.name }}</h1>
     {% for program in programs %}
         <div>
             <h2>{{ program.id }} - <a href="{{ path("program_show", { id: program.id }) }}">
@@ -11,7 +11,7 @@
             <p>{{ program.summary }}</p>
         </div>
     {% else %}
-        Aucune série trouvée.
+        <p>Aucune série trouvée.</p>
     {% endfor %}
 
     <a href="{{ path('category_index') }}">

@@ -3,7 +3,7 @@
 {% block title %}All Categories{% endblock %}
 
 {% block body %}
-    <h1>Toutes les Catégories de la table category :</h1>
+    <h1 style="border-bottom: 1px solid black; padding-bottom: 5px">Toutes les Catégories de la table category :</h1>
     {% for category in categories %}
         <div>
             <h2>{{ loop.index }} - <a href="{{ path('category_show',  { categoryName: category.name }) }}">
