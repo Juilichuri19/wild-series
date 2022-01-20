@@ -14,7 +14,7 @@
 
     <h2 style="text-decoration: underline">Liste des seasons</h2>
     {% for season in program.seasons %}
-        <h2  style="padding-left: 20px"><a href="{{ path('program_season_show', { programId: program.id , seasonId: season.id}) }}">{{ season.description }}</a></h2>
+        <h2  style="padding-left: 20px"><a href="{{ path('program_season_show', { program: program.id , season: season.id}) }}">{{ season.description }}</a></h2>
     {% endfor %}
     <a href="{{ path('program_index') }}">
         Retour à la liste des programmes

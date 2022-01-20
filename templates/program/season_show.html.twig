@@ -14,7 +14,8 @@
         <div class="media">
             <h2 style="text-decoration: underline">Liste des episodes</h2>
             {% for episode in season.episodes %}
-                <p style="padding-left: 40px">Episode {{ loop.index }} : {{ episode.title }}</p>
+                <p style="padding-left: 40px">Episode {{ loop.index }} :
+                    <a href="{{ path('program_episode_show', {program_id:program.id, season_id:season.id, episode_id:episode.id}) }}">{{ episode.title }}</a></p>
             {% else %}
                 <p>Aucune episodes trouvée.</p>
             {% endfor %}
