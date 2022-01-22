@@ -6,8 +6,14 @@ use App\Repository\ProgramRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: ProgramRepository::class)]
+#[UniqueEntity('title',
+    message: 'This title already exists'
+)]
+
 class Program
 {
     #[ORM\Id]
@@ -15,10 +21,20 @@ class Program
     #[ORM\Column(type: 'integer')]
     private $id;
 
-    #[ORM\Column(type: 'string', length: 255)]
+    #[ORM\Column(type: 'string', length: 255, unique: true)]
+    #[Assert\NotBlank(message: 'Title field is required.')]
+    #[Assert\Length(max: 255,
+        maxMessage: 'Title cannot be longer than {{ limit }} characters.',
+    )]
     private $title;
 
     #[ORM\Column(type: 'text')]
+    #[Assert\NotBlank(message: 'Summary field is required.')]
+    #[Assert\Regex(
+        pattern: '/[plus belle la vie]/',
+        message: 'We are talking about real series here',
+        match: false
+    )]
     private $summary;
 
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
