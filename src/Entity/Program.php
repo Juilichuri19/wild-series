@@ -33,7 +33,7 @@ class Program
     #[Assert\Regex(
         pattern: '/[plus belle la vie]/',
         message: 'We are talking about real series here',
-        match: false
+        match: true
     )]
     private $summary;
 

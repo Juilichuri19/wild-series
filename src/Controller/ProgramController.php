@@ -7,6 +7,8 @@ use App\Entity\Program;
 use App\Entity\Episode;
 use App\Entity\Season;
 use App\Form\CategoryType;
+use App\Form\EpisodeType;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -75,6 +77,28 @@ class ProgramController extends AbstractController
             'program' => $program,
         ]);
     }
+
+    /**
+    * @Route("/{id}/edit", name= "edit", methods= {"GET", "POST"})
+    */
+
+    public function edit(Request $request, Program $program, EntityManagerInterface $entityManager): Response
+    {
+        $form = $this->createForm(ProgramType::class, $program);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $entityManager->flush();
+
+            return $this->redirectToRoute('program_index', [], Response::HTTP_SEE_OTHER);
+        }
+
+        return $this->renderForm('program/edit.html.twig', [
+            'episode' => $program,
+            'form' => $form,
+        ]);
+    }
+
 
     /**
      * @Route("/{program<^[0-9]+$>}/seasons/{season<^[0-9]+$>}", methods={"GET"}, name="season_show")
