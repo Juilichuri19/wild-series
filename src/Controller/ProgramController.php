@@ -8,6 +8,7 @@ use App\Entity\Episode;
 use App\Entity\Season;
 use App\Form\CategoryType;
 use App\Form\EpisodeType;
+use App\Service\Slugify;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
@@ -43,24 +44,19 @@ class ProgramController extends AbstractController
      *
      * @Route("/new", name="new")
      */
-    public function new(Request $request): Response
+    public function new(Request $request, Slugify $slugify): Response
     {
-        // Create a new Category Object
+
         $program = new Program();
-        // Create the associated Form
         $form = $this->createForm(ProgramType::class, $program);
-        // Get data from HTTP request
         $form->handleRequest($request);
-        // Was the form submitted ?
         if ($form->isSubmitted() && $form->isValid()) {
-            // Deal with the submitted data
-            // Get the Entity Manager
             $entityManager = $this->getDoctrine()->getManager();
-            // Persist Program Object
+            $slug = $slugify->generate($program->getTitle());
+            $program->setSlug($slug);
             $entityManager->persist($program);
-            // Flush the persisted object
             $entityManager->flush();
-            // Finally redirect to programs list
+
             return $this->redirectToRoute('program_index');
         }
         // Render the form
@@ -69,7 +65,7 @@ class ProgramController extends AbstractController
     }
 
     /**
-     * @Route("/{id<^[0-9]+$>}", methods={"GET"}, name="show")
+     * @Route("/{slug}", methods={"GET"}, name="show")
      */
     public function show(Program $program): Response
     {
@@ -82,19 +78,23 @@ class ProgramController extends AbstractController
     * @Route("/{id}/edit", name= "edit", methods= {"GET", "POST"})
     */
 
-    public function edit(Request $request, Program $program, EntityManagerInterface $entityManager): Response
+    public function edit(Request $request, Program $program, EntityManagerInterface $entityManager, Slugify $slugify): Response
     {
         $form = $this->createForm(ProgramType::class, $program);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            $entityManager = $this->getDoctrine()->getManager();
+            $slug = $slugify->generate($program->getTitle());
+            $program->setSlug($slug);
+            $entityManager->persist($program);
             $entityManager->flush();
 
             return $this->redirectToRoute('program_index', [], Response::HTTP_SEE_OTHER);
         }
 
         return $this->renderForm('program/edit.html.twig', [
-            'episode' => $program,
+            'program' => $program,
             'form' => $form,
         ]);
     }

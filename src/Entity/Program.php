@@ -31,9 +31,9 @@ class Program
     #[ORM\Column(type: 'text')]
     #[Assert\NotBlank(message: 'Summary field is required.')]
     #[Assert\Regex(
-        pattern: '/[plus belle la vie]/',
+        pattern: '/plus belle la vie/',
         message: 'We are talking about real series here',
-        match: true
+        match: false
     )]
     private $summary;
 
@@ -50,6 +50,9 @@ class Program
 
     #[ORM\ManyToMany(targetEntity: Actor::class, mappedBy: 'programs')]
     private $actors;
+
+    #[ORM\Column(type: 'string', length: 255)]
+    private $slug;
 
     public function __construct()
     {
@@ -163,6 +166,18 @@ class Program
         if ($this->actors->removeElement($actor)) {
             $actor->removeProgram($this);
         }
+
+        return $this;
+    }
+
+    public function getSlug(): ?string
+    {
+        return $this->slug;
+    }
+
+    public function setSlug(string $slug): self
+    {
+        $this->slug = $slug;
 
         return $this;
     }
