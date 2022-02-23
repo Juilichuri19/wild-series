@@ -1,0 +1,12 @@
+{% extends 'layoutEmail.html.twig' %}
+
+{% block title %}New Episode{% endblock %}
+
+{% block body %}
+    <h1>New Episode: '{{ episode.number}} - {{ episode.title }}' created</h1>
+    <p>Hello, the new episode <b>{{ episode.title }}</b> has been created under <b>{{ episode.season.program.title }}</b></p>
+    <p>Summary : {{ episode.synopsis }}</p>
+
+    <a href="{{  url('program_season_show', {program: episode.season.program.id , season: episode.season.id}) }}">All Episodes</a>
+
+{% endblock %}
