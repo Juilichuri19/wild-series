@@ -6,6 +6,7 @@ use App\Service\Slugify;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
+use App\Entity\Program;
 
 class ProgramFixtures extends Fixture
 {
@@ -25,7 +26,7 @@ class ProgramFixtures extends Fixture
         for ($i=0; $i < count(ActorFixtures::ACTORS); $i++) {
             $program->addActor($this->getReference('actor_' . $i));
         }
-        //$this->addReference('program1');
+        $this->addReference('program1', $program);
         $manager->persist($program);
         $manager->flush();
     }

@@ -2,9 +2,17 @@
 
 {% block title %}Episode{% endblock %}
 
+{% block Stylesheet %}
+    <style>
+        #comment_comment{
+            width: 70%;
+        }
+    </style>
+{% endblock %}
+
 {% block body %}
     <h1>Episode</h1>
-    <table class="table">
+    <table class="table" cellpadding="1" border="1">
         <tbody>
             <tr>
                 <th>Id</th>
@@ -24,6 +32,43 @@
             </tr>
         </tbody>
     </table>
+
+    {% if episode.comments %}
+        <h3>User Comments</h3>
+        <ul>
+        {% for comment in  episode.comments %}
+            <li>
+                {{ comment.comment }} -<span style="color: #5eb5e0;">{{ comment.author.username }}</span> <span style="color: lightblue">[{{ comment.createdAt|date("m/d/Y h:m") }}]</span>
+            </li>
+        {% else %}
+            <li>No comments yet</li>
+        {% endfor %}
+
+        </ul>
+    {% endif %}
+    {% if app.user %}
+        {{ form_start(form) }}
+        <h3>Add Comment</h3>
+        <div class="my-custom-class-for-errors">
+            {{ form_errors(form) }}
+        </div>
+
+        <div class="row" style="width: 14%; text-align: center;">
+
+            <div class="col" id="some-custom-id">
+                {{ form_row(form.comment,  { 'label': ' ' }) }}
+            </div>
+            <div class="col" >
+                {{ form_row(form.rate) }}
+                <button type="submit" name="submit" style="margin-left: 120px">Submit</button>
+            </div>
+        </div>
+        {{ form_end(form) }}
+        {% else %}
+            <div>
+                To comment <a href="{{ path('login') }}">Login here!</a>
+            </div>
+    {% endif %}
 
     <a href="{{ path('episode_index') }}">back to list</a>
 

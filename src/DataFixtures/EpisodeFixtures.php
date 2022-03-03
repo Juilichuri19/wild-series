@@ -37,7 +37,8 @@ class EpisodeFixtures extends Fixture
             $episode->setTitle(self::EPISODE[$i]);
             $episode->setSynopsis(self::SYNOPSIS[$i]);
             $episode->setNumber($i);
-            $episode->setSeason($this->getReference('season_0'));
+            //$episode->setSeason($this->)
+            //$episode->addSeason($this->getReference(SeasonFixtures::SEASONS));
         }
         $manager->persist($episode);
 
